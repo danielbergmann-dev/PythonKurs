@@ -59,7 +59,6 @@ class Spaceship:
         self.bullets.append(Bullet(self.game, self.x, self.y))
         self.bullets[len(self.bullets) -1].fire()
 
-
     def move(self, speed):
         self.change_x += speed
 
