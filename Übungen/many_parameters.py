@@ -4,4 +4,5 @@ def multi(number1, number2, *numbers):
         sum += i
     return sum
 
-print(multi(2,2,2))
+
+print(multi(2, 2, 2))

@@ -1,15 +1,14 @@
-field = ["",
-         "1", "2", "3",
-         "4", "5", "6",
-         "7", "8", "9"]
+field = ["", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
 
 active_player = "X"
 run = True
+
 
 def print_field():
     print(field[1] + "|" + field[2] + "|" + field[3])
     print(field[4] + "|" + field[5] + "|" + field[6])
     print(field[7] + "|" + field[8] + "|" + field[9])
+
 
 def next_move():
     global run
@@ -28,12 +27,14 @@ def next_move():
         else:
             print("Invalid move. Try again")
 
+
 def change_player():
     global active_player
     if active_player == "X":
         active_player = "O"
     else:
         active_player = "X"
+
 
 def check_win():
     if field[1] == field[2] == field[3]:
@@ -54,20 +55,19 @@ def check_win():
         return True
     return False
 
+
 def check_draw():
     for i in range(1, 9):
         if field[i] != "X" and field[i] != "O":
             return False
     return True
 
+
 def game_repeat():
     global run, field
     newStart = input("Do you want to play again? (y/n): ")
     if newStart.lower() == "y":
-        field = ["",
-                 "1", "2", "3",
-                 "4", "5", "6",
-                 "7", "8", "9"]
+        field = ["", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
         run = True
     else:
         run = False
@@ -89,4 +89,3 @@ while run:
         change_player()
     if not run:
         game_repeat()
-

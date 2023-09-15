@@ -1,4 +1,5 @@
 import pygame
+import random
 
 
 class Game:
@@ -10,6 +11,11 @@ class Game:
         self.running = True
         self.spaceship = Spaceship(self, 370, 515)
         self.background_img = pygame.image.load("img/stars.png")
+        self.enemies = []
+        for i in range(12):
+            self.enemies.append(
+                Enemy(self, random.randint(0, 736), random.randint(50, 150))
+            )
 
         while self.running:
             self.clock.tick(60)
@@ -34,7 +40,6 @@ class Game:
                     if event.key == pygame.K_RIGHT:
                         self.spaceship.move(-15)
 
-
             self.spaceship.update()
             if len(self.spaceship.bullets) > 0:
                 for bullet in self.spaceship.bullets:
@@ -43,8 +48,11 @@ class Game:
                     else:
                         self.spaceship.bullets.remove(bullet)
 
+            for enemy in self.enemies:
+                enemy.update()
 
             pygame.display.update()
+
 
 class Spaceship:
     def __init__(self, game, x, y):
@@ -57,7 +65,7 @@ class Spaceship:
 
     def fire_bullet(self):
         self.bullets.append(Bullet(self.game, self.x, self.y))
-        self.bullets[len(self.bullets) -1].fire()
+        self.bullets[len(self.bullets) - 1].fire()
 
     def move(self, speed):
         self.change_x += speed
@@ -69,6 +77,7 @@ class Spaceship:
         elif self.x >= 736:
             self.x = 736
         self.game.screen.blit(self.spaceship_img, (self.x, self.y))
+
 
 class Bullet:
     def __init__(self, game, x, y):
@@ -89,6 +98,17 @@ class Bullet:
         self.game.screen.blit(self.bullet_img, (self.x, self.y))
 
 
+class Enemy:
+    def __init__(self, game, x, y):
+        self.game = game
+        self.x = x
+        self.y = y
+        self.enemy_img = pygame.image.load("img/enemy.png")
+        self.enemy_speed = 10
+
+    def update(self):
+        self.game.screen.blit(self.enemy_img, (self.x, self.y))
+
+
 if __name__ == "__main__":
     game = Game()
-
