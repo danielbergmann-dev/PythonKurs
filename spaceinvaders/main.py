@@ -1,5 +1,6 @@
 import pygame
 import random
+import math
 
 
 class Game:
@@ -50,6 +51,7 @@ class Game:
 
             for enemy in self.enemies:
                 enemy.update()
+                enemy.check_collision()
 
             pygame.display.update()
 
@@ -103,10 +105,30 @@ class Enemy:
         self.game = game
         self.x = x
         self.y = y
+        self.change_x = 5
+        self.change_y = 60
         self.enemy_img = pygame.image.load("img/enemy.png")
         self.enemy_speed = 10
 
+    def check_collision(self):
+        for bullet in self.game.spaceship.bullets:
+            distance = math.sqrt(
+                math.pow(self.x - bullet.x, 2) + math.pow(self.y - bullet.y, 2)
+            )
+            if distance < 35:
+                bullet.is_fired = False
+                self.x = random.randint(0, 736)
+                self.y = random.randint(50, 150)
+
     def update(self):
+        self.x += self.change_x
+        if self.x >= 736:
+            self.change_x = -5
+            self.y += self.change_y
+        elif self.x < 0:
+            self.change_x = 5
+            self.y += self.change_y
+
         self.game.screen.blit(self.enemy_img, (self.x, self.y))
 
 
