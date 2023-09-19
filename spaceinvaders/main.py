@@ -6,10 +6,47 @@ class Game:
     def __init__(self):
         pygame.init()
         self.screen = pygame.display.set_mode((800, 600))
-        pygame.display.set_caption("Space Invaders")
+        pygame.display.set_caption("Tituzzz Invaders")
         self.clock = pygame.time.Clock()
         self.initialize_game()
         self.game_loop()
+
+    def welcome_screen(self):
+        welcome_font = pygame.font.Font("freesansbold.ttf", 32)
+
+        # Atari-Farben als Liste
+        atari_colors = [
+            (124, 124, 255),  # Blau
+            (255, 106, 106),  # Rot
+            (188, 188, 34),   # Gelb
+            (104, 206, 104),  # Grün
+        ]
+
+        # Text für den Welcome Screen
+        welcome_text_str = "Tituzzz Invaders awaits you, Press Space!"
+
+        # Die Position für den ersten Buchstaben
+        x_position = 100
+        y_position = 300
+
+        # Jeden Buchstaben einzeln rendern und blitten
+        for index, letter in enumerate(welcome_text_str):
+            color = atari_colors[index % len(atari_colors)]
+            letter_surface = welcome_font.render(letter, True, color)
+            self.screen.blit(letter_surface, (x_position, y_position))
+            x_position += welcome_font.size(letter)[0]
+
+        pygame.display.update()
+
+        waiting = True
+        while waiting:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.running = False
+                    waiting = False
+                elif event.type == pygame.KEYDOWN:
+                    waiting = False
+
 
     def initialize_game(self):
         self.running = True
@@ -26,6 +63,7 @@ class Game:
         self.initialize_game()
 
     def game_loop(self):
+        self.welcome_screen()
         while self.running:
             self.clock.tick(60)
             self.screen.fill((0, 0, 255))
@@ -85,12 +123,33 @@ class Game:
 
     def print_game_over(self):
         go_font = pygame.font.Font("freesansbold.ttf", 64)
-        go_text = go_font.render("GAME OVER", True, (255, 255, 255))
-        self.screen.blit(go_text, (200, 250))
+
+        # Atari-Farben als Liste
+        atari_colors = [
+            (124, 124, 255),  # Blau
+            (255, 106, 106),  # Rot
+            (188, 188, 34),   # Gelb
+            (104, 206, 104),  # Grün
+        ]
+
+        # Text für Game Over
+        go_text = "GAME OVER"
+
+        # Die Position für den ersten Buchstaben
+        x_position = 200
+        y_position = 250
+
+        # Jeden Buchstaben einzeln rendern und blitten
+        for index, letter in enumerate(go_text):
+            color = atari_colors[index % len(atari_colors)]
+            letter_surface = go_font.render(letter, True, color)
+            self.screen.blit(letter_surface, (x_position, y_position))
+            x_position += go_font.size(letter)[0]
 
         restart_font = pygame.font.Font("freesansbold.ttf", 32)
-        restart_text = restart_font.render("Press 'R' to Restart", True, (255, 255, 255))
+        restart_text = restart_font.render("Better next time? Press 'R' ", True, (255, 255, 255))
         self.screen.blit(restart_text, (230, 350))
+
 
 
     def print_score(self):
@@ -145,7 +204,7 @@ class Bullet:
 class EnemyBullet(Bullet):
     def __init__(self, game, x, y):
         super().__init__(game, x, y)
-        self.bullet_speed = -5  # Negative Geschwindigkeit, um nach unten zu schießen
+        self.bullet_speed = -3  # Negative Geschwindigkeit, um nach unten zu schießen
 
 
 class Enemy:
