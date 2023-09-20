@@ -8,8 +8,12 @@ class Game:
         self.screen = pygame.display.set_mode((800, 600))
         pygame.display.set_caption("Tituzzz Invaders")
         self.clock = pygame.time.Clock()
+
+        self.background_y1 = 0
+        self.background_y2 = -600  # Da die Größe des Bildschirms 800x600 ist
         self.initialize_game()
         self.game_loop()
+
 
     def welcome_screen(self):
         welcome_font = pygame.font.Font("freesansbold.ttf", 32)
@@ -54,7 +58,7 @@ class Game:
         self.score = 0
         self.background_img = pygame.image.load("img/stars.png")
         self.enemies = []
-        for i in range(12):
+        for i in range(8):
             self.enemies.append(
                 Enemy(self, random.randint(0, 736), random.randint(50, 150))
             )
@@ -67,7 +71,9 @@ class Game:
         while self.running:
             self.clock.tick(60)
             self.screen.fill((0, 0, 255))
-            self.screen.blit(self.background_img, (0, 0))
+
+            self.screen.blit(self.background_img, (0, self.background_y1))
+            self.screen.blit(self.background_img, (0, self.background_y2))
             self.spaceship.update()
 
             for event in pygame.event.get():
@@ -76,9 +82,9 @@ class Game:
 
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_LEFT:
-                        self.spaceship.move(-15)
+                        self.spaceship.move(-10)
                     if event.key == pygame.K_RIGHT:
-                        self.spaceship.move(15)
+                        self.spaceship.move(10)
                     if event.key == pygame.K_SPACE:
                         self.spaceship.fire_bullet()
                     if event.key == pygame.K_r:
@@ -119,6 +125,15 @@ class Game:
                         break
 
             self.print_score()
+            self.background_y1 += 10  # Geschwindigkeit, mit der der Hintergrund sich bewegt
+            self.background_y2 += 10
+
+            # Reset, wenn das Bild ganz heruntergescrollt ist
+            if self.background_y1 >= 600:
+                self.background_y1 = -600
+            if self.background_y2 >= 600:
+                self.background_y2 = -600
+
             pygame.display.update()
 
     def print_game_over(self):
